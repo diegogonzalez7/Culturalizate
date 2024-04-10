@@ -1,16 +1,14 @@
-#README
-
-##Nombre Proyecto: 
+## Nombre Proyecto: 
 
 
 
 
-##Integrantes Grupo:
+## Integrantes Grupo:
 
     - David Vilariño Da Silva david.vilarino@udc.es
     - Manuel Fontenlos Mato manuel.fontenlos@udc.es
     - Diego González González diego.gonzalez7@udc.es
 
-##Cómo ejecutar:
+## Cómo ejecutar:
 
-##Problemas conocidos:
+## Problemas conocidos:
