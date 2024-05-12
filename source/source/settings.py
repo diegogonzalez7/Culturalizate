@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'countries.apps.CountriesConfig', #clase dentro de countries/apps.py
+    #'crispy_forms',
+    #'crispy_bootstrap5', #Para los formularios
 ]
 
 MIDDLEWARE = [
