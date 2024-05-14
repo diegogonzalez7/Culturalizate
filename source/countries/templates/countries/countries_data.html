@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All countries</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+</head>
+<body>
+    <h1>Todos los países ({{total}})</h1>
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre país</th>
+                <th>Capital</th>
+                <th>Población</th>
+                <th>Fronteras</th>
+                <th>Bandera</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in con %}
+                <tr>
+                    <td>{{i.name.common}}</td>
+                    <td>{{i.capital}}</td>
+                    <td>{{i.population}}</td>
+                    <td>
+                        <ol>
+                            {% for j in i.borders %}
+                                <li>{{j}}</li>                            
+                            {% endfor %}
+                        </ol>
+                    </td>
+                    <td><img src="{{i.flags.png}}" height="100"></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

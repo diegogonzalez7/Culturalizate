@@ -27,6 +27,7 @@ urlpatterns = [
     path("home/", include("countries.urls")),
     path('', include('django.contrib.auth.urls')),
     path('sign_up', views.sign_up, name='sign_up'),
+    path('apidata/', views.countries)
 ]
 """
 django.contrib.auth.urls incluye los siguientes patrones URL:

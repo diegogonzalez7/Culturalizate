@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import RegisterForm
 from django.contrib.auth import login, logout, authenticate
+import requests
 # Create your views here.
 
 def home(request):
@@ -19,4 +20,6 @@ def sign_up(request):
 
     return render(request, 'registration/sign_up.html', {"form":form})
 
-
+def countries(request):
+    data = requests.get("https://restcountries.com/v3.1/lang/spanish").json()
+    return render(request, "countries/countries_data.html", {"con":data, "total":len(data)})
