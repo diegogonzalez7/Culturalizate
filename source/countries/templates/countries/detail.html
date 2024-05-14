@@ -1,0 +1,45 @@
+{% extends 'countries/base.html' %}
+{% block title %}Country Detail{% endblock %}
+{% block content %}
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    .country-name {
+        margin-top: 1.5em; 
+    }
+
+    .country-image {
+        margin-bottom: 1.5em; 
+    }
+
+</style>
+<body>
+    <h1>
+        {% for country in data %}
+            <p class="country-name">{{ country.name.common | upper}}</p>
+            <p class="country-image"><img src="{{country.flags.png}}"></p>
+        {% endfor %}
+    </h1>
+
+    <h4>
+        {% for country in data %}
+            <p>Capitales: {{ country.capital|join:', ' }}</p>
+            <!--><p>Divisa: {{country.currencies.ARS.name}}</p> <!-->
+            <p>Continentes: {{ country.continents|join:', ' }}</p>
+            <p>Región: {{country.region}}</p>
+            <p>Subregión: {{country.subregion}}</p>
+            <!--><p>Idiomas: {{country.languages.|join:','}}</p> <!-->
+            <p>Área(m²): {{country.area}}</p>
+            <p>Población: {{country.population}}</p>
+            <p>Timezone:{{country.timezones|join:', '}}</p>
+        {% endfor %}    
+    </h4>        
+</body>    
+{% endblock %}s
+

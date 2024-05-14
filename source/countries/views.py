@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse 
+from django.template import loader
 from .forms import RegisterForm
 from django.contrib.auth import login, logout, authenticate
+import requests
 # Create your views here.
 
 def home(request):
@@ -20,4 +22,9 @@ def sign_up(request):
     return render(request, 'countries/sign_up.html', {"form": form})
 
 def detail(request, country):
-    return HttpResponse("Information of the countrie %s here." % country)
+    data=requests.get("https://restcountries.com/v3.1/name/" + "%s" %country).json()
+    template = loader.get_template("countries/detail.html")
+    context={
+        "data":data,
+    }
+    return HttpResponse(template.render(context,request))
