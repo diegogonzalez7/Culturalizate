@@ -1,3 +1,5 @@
+
+
 from django.urls import path, include
 from django.contrib import admin
 
@@ -9,4 +11,5 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('<str:country>/', views.detail, name='detail'),
     path('', views.home, name='home'),
+    path('<str:language>/', views.language, name='language')
 ]

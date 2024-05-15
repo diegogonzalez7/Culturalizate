@@ -1,0 +1,44 @@
+
+{% extends 'countries/base.html' %}
+{% block title %}List of counties{% endblock %}
+{% block content %}
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    .country-name {
+        margin-top: 1.5em; 
+    }
+
+    .country-image {
+        margin-bottom: 1.5em; 
+    }
+
+</style>
+<body>
+    <h1>Países por Idioma - {{ language }}</h1>
+
+    {% if countries_data %}
+    <h2>Países que hablan {{ language }}:</h2>
+    <ul>
+        {% for country in countries_data %}
+        <li>
+            <!-- Imagen del país -->
+            <img src="{{ country.flags.png }}" alt="{{ country.name.common }}">
+            <!-- Enlace al detalle del país -->
+            <a href="{% url 'countries:search_country' country.name.common %}">{{ country.name.common }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>

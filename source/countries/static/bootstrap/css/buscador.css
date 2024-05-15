@@ -1,44 +1,47 @@
-/* Estilos para el contenedor del cuadro de búsqueda */
 #search-box {
-    position: relative;
-    width: 100%;
-    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-/* Estilos para el formulario de búsqueda */
 #search-form {
-    height: 32px;
-    border: 1px solid #cbf3ee;
-    border-radius: 15px; /* Establecer el radio de borde para redondear los bordes */
-    background-color: #fff;
-    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-/* Estilos para el campo de entrada de texto */
 #search-text {
-    font-size: 14px;
-    color: #ddd;
-    border-width: 0;
-    background: transparent;
-    width: 90%;
-    padding: 8px 0 12px 1em;
-    color: #333;
-    outline: none;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 250px;
 }
 
-/* Estilos para el botón de búsqueda */
+#search-type {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 150px; /* Ancho ajustado para mostrar completamente las opciones */
+    background-color: #f7f7f7;
+    color: #333;
+}
+
 #search-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 34px;
-    width: 80px;
-    font-size: 14px;
+    padding: 10px 20px;
+    background-color: #007bff;
     color: #fff;
-    text-align: center;
-    line-height: 34px; /* Centrar verticalmente el texto del botón */
-    border-width: 0;
-    background-color: #feacae;
-    border-radius: 0px 15px 15px 0px; /* Redondear solo el borde derecho del botón */
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#search-button:hover {
+    background-color: #0056b3;
 }

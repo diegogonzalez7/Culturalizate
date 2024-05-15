@@ -35,3 +35,11 @@ def detail(request, country):
         "data":data,
     }
     return HttpResponse(template.render(context,request))
+
+def language(request, language):
+    data=requests.get("https://restcountries.com/v3.1/lang/" + "%s" %language).json()
+    template = loader.get_template("countries/language.html")
+    context={
+        "data":data,
+    }
+    return HttpResponse(template.render(context,request))
