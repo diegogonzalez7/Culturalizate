@@ -6,10 +6,12 @@
 {% block content %}
 <h1>Home Page!!</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="country_name" placeholder="Buscar país por nombre">
-    <button type="submit">Buscar</button>
-  </form>
+<div id="search-box">
+    <form id="search-form" method="post">
+        {% csrf_token %}
+        <input id="search-text" type="text" name="country_name" placeholder="Buscar país por nombre">
+        <button id="search-button" type="submit">Buscar</button>
+    </form>
+</div>
   
 {% endblock %}
