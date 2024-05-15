@@ -1,0 +1,10 @@
+<!-- favoritos.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Mis Países Favoritos</h1>
+    <ul>
+        {% for favorito in favoritos_usuario %}
+            <li>{{ favorito.pais }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -11,5 +11,6 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('<str:country>/', views.detail, name='detail'),
     path('', views.home, name='home'),
-    path('<str:language>/', views.language, name='language')
+    path('<str:language>/', views.language, name='language'),
+    path('favoritos/', views.favoritos, name='favoritos')
 ]

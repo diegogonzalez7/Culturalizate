@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import RegisterForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 import requests
 # Create your views here.
+# Si queremos requerir el login para el acceso a una vista usaremos @login_required(login_url="/login") antes de ella, redirigiendo a la url si no está logeado
 
 def home(request):
     if request.method == 'POST':

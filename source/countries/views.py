@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse 
+from django.shortcuts import render, redirect
 from django.template import loader
 from .forms import RegisterForm
-from django.contrib.auth import login, logout, authenticate
+from .forms import FavoritoForm
+from django.urls import reverse 
+from .models import Favorito
 import requests
-# Create your views here.
+
 
 def home(request):
     if request.method == 'POST':
@@ -43,3 +45,19 @@ def language(request, language):
         "data":data,
     }
     return HttpResponse(template.render(context,request))
+
+def añadir_favorito(request, pais_id):
+    if request.method == 'POST':
+        form = FavoritoForm(request.POST)
+        if form.is_valid():
+            usuario = request.user
+            pais = form.cleaned_data['pais']
+            Favorito.objects.create(usuario=usuario, pais=pais)
+            return redirect('detalle_pais', pais_id=pais_id)  # Redirigir de vuelta a la página de detalles del país
+    else:
+        form = FavoritoForm()
+    return render(request, 'añadir_favorito.html', {'form': form})
+
+def favoritos(request):
+    favoritos_usuario = Favorito.objects.filter(usuario=request.user)
+    return render(request, 'favoritos.html', {'favoritos_usuario': favoritos_usuario})

@@ -16,18 +16,27 @@
                         <a class="nav-link" href="/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/detail">Country Detail</a>
+                        <a class="nav-link" href="/b_idiomas">Search by language</a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/favoritos">Mis Favoritos</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             <div>
                 <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <span class="navbar-text">Sesión iniciada como {{user.username}} | </span>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign_up">Sign Up</a>
-                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
