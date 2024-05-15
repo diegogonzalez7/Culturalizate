@@ -1,5 +1,15 @@
+
+
+
 {% extends 'countries/base.html' %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
 <h1>Home Page!!</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="country_name" placeholder="Buscar país por nombre">
+    <button type="submit">Buscar</button>
+  </form>
+  
 {% endblock %}
