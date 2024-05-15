@@ -6,6 +6,13 @@ import requests
 # Create your views here.
 
 def home(request):
+    if request.method == 'POST':
+        # Obtener el término de búsqueda del formulario
+        country_name = request.POST.get('country_name', None)
+        if country_name:
+            # Redirigir al usuario a la vista detail del país buscado
+            return redirect('countries:detail', country=country_name)
+    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/home.html')
 
 def sign_up(request):
