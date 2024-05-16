@@ -1,15 +1,102 @@
-
 {% extends 'countries/base.html' %}
 {% block title %}SEARCH BY LANGUAGE{% endblock %}
 {% block content %}
-<h1>BÚSQUEDA POR IDIOMA</h1>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+    }
 
-<div id="search-box">
-    <form id="search-form" method="post">
-        {% csrf_token %}
-        <input id="search-text" type="text" name="country_language" placeholder="Buscar país por idioma">
-        <button id="search-button" type="submit">Buscar</button>
-    </form>
-</div>
-  
+    h1 {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 2em;
+        margin-bottom: 1em;
+        font-size: 2.5em;
+        color: #333;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    #search-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 80vh; /* Adjusted to keep some space for the header */
+    }
+
+    #search-box {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+    }
+
+    #search-form {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #search-text {
+        width: 70%;
+        padding: 10px;
+        font-size: 1.1em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 1em;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    #search-text:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    #search-button {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        display: flex;
+        align-items: center;
+    }
+
+    #search-button:hover {
+        background: linear-gradient(45deg, #0056b3, #007bff);
+        transform: translateY(-2px);
+    }
+
+    #search-button svg {
+        margin-right: 8px;
+        width: 1.2em;
+        height: 1.2em;
+    }
+</style>
+<body>
+    <div id="search-container">
+        <h1>Busque países por idioma</h1>
+        <div id="search-box">
+            <form id="search-form" method="post">
+                {% csrf_token %}
+                <input id="search-text" type="text" name="country_language" placeholder="Buscar país por idioma">
+                <button id="search-button" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l-2-2m0 0l-5-5m7 7a7 7 0 0010-10 7 7 0 10-10 10zm-2 0V20h.01"/>
+                    </svg>
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+</body>  
 {% endblock %}
