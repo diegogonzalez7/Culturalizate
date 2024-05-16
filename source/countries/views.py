@@ -34,9 +34,9 @@ def search_by_capital(request):
         # Obtener el término de búsqueda del formulario
         capital_name = request.POST.get('country_capital', None) 
         if capital_name:
-            # Redirigir al usuario a la vista detail del país buscado
+            # Redirigir al usuario a la vista capital del país buscado
             return redirect('countries:capital', capital=capital_name)
-    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
+    # Si no hay búsqueda o es una solicitud GET, renderizar la página b_capital
     return render(request, 'countries/b_capital.html')  
 
 def search_by_currency(request):
@@ -50,21 +50,28 @@ def search_by_currency(request):
     return render(request, 'countries/b_currency.html')  
 
 def capital(request, capital): 
-    data=requests.get("https://restcountries.com/v3.1/capital/" + "%s" %capital).json()
-    template = loader.get_template("countries/capital.html")
-    context={
-        "data":data,
-    }
-    return HttpResponse(template.render(context,request))   
-
+    try:
+        data=requests.get("https://restcountries.com/v3.1/capital/" + "%s" %capital).json()
+        template = loader.get_template("countries/capital.html")
+        context={
+            "data":data,
+        }
+        return HttpResponse(template.render(context,request))   
+    except Exception as e:
+        # Manejo de errores en caso de problemas con la solicitud
+        return render(request, 'countries/no_data.html')
 
 def currency(request, currency): 
-    data=requests.get("https://restcountries.com/v3.1/currency/" + "%s" %currency).json()
-    template = loader.get_template("countries/currency.html")
-    context={
-        "data":data,
-    }
-    return HttpResponse(template.render(context,request))    
+    try:    
+        data=requests.get("https://restcountries.com/v3.1/currency/" + "%s" %currency).json()
+        template = loader.get_template("countries/currency.html")
+        context={
+            "data":data,
+        }
+        return HttpResponse(template.render(context,request))
+    except Exception as e:
+        # Manejo de errores en caso de problemas con la solicitud
+        return render(request, 'countries/no_data.html')    
 
 def sign_up(request):
     if request.method == 'POST':
@@ -78,20 +85,29 @@ def sign_up(request):
     return render(request, 'countries/sign_up.html', {"form": form})
 
 def detail(request, country):
-    data=requests.get("https://restcountries.com/v3.1/name/" + "%s" %country).json()
-    template = loader.get_template("countries/detail.html")
-    context={
-        "data":data,
-    }
-    return HttpResponse(template.render(context,request))
+    try:    
+        data=requests.get("https://restcountries.com/v3.1/name/" + "%s" %country).json()
+        template = loader.get_template("countries/detail.html")
+        context={
+            "data":data,
+        }
+        return HttpResponse(template.render(context,request))
+    except Exception as e:
+        # Manejo de errores en caso de problemas con la solicitud
+        return render(request, 'countries/no_data.html')
 
 def language(request, language): 
-    data=requests.get("https://restcountries.com/v3.1/lang/" + "%s" %language).json()
-    template = loader.get_template("countries/language.html")
-    context={
-        "data":data,
-    }
-    return HttpResponse(template.render(context,request))
+    try:        
+        data=requests.get("https://restcountries.com/v3.1/lang/" + "%s" %language).json()
+        template = loader.get_template("countries/language.html")
+        context={
+            "data":data,
+        }
+        return HttpResponse(template.render(context,request))
+    except Exception as e:
+        # Manejo de errores en caso de problemas con la solicitud
+        return render(request, 'countries/no_data.html')
+
 def añadir_favorito(request, pais_id):
     if request.method == 'POST':
         form = FavoritoForm(request.POST)
