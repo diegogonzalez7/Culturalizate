@@ -1,5 +1,6 @@
-<form method="post">
+
+<form id="favorito" method="post">
     {% csrf_token %}
-    {{ form }}
-    <button type="submit">Añadir a favoritos</button>
+    <input type="hidden" name="pais" value="{{ country.name.common }}">
+    <button type="submit">Agregar a favoritos</button>
 </form>

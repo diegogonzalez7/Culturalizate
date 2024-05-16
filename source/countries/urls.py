@@ -17,5 +17,6 @@ urlpatterns = [
     path('capital',views.search_by_capital, name='search_by_capital'),
     path('capital/<str:capital>/', views.capital, name='capital'),
     path('currency',views.search_by_currency, name='search_by_currency'),
-    path('currency/<str:currency>/', views.currency, name='currency')
+    path('currency/<str:currency>/', views.currency, name='currency'),
+    path('añadir-favorito/', views.añadir_favorito, name='añadir_favorito')
 ]

@@ -1,0 +1,21 @@
+{% extends 'countries/base.html' %}
+{% block title %}Country Detail{% endblock %}
+{% block content %}
+
+<body>
+    <h1>Lista de países favoritos</h1>
+    {% if favoritos_usuario %}
+        <ul>
+            {% for favorito in favoritos_usuario %}
+                <li>
+                    <h2>{{ favorito.pais.nombre }}</h2>
+                    <img src="{{ favorito.pais.bandera }}" alt="{{ favorito.pais.nombre }} bandera">
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes países marcados como favoritos.</p>
+    {% endif %}
+</body>
+
+{% endblock %}

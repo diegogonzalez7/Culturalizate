@@ -143,16 +143,15 @@ def language(request, language):
 
 def añadir_favorito(request, pais_id):
     if request.method == 'POST':
-        form = FavoritoForm(request.POST)
-        if form.is_valid():
-            usuario = request.user
-            pais = form.cleaned_data['pais']
-            Favorito.objects.create(usuario=usuario, pais=pais)
-            return redirect('detalle_pais', pais_id=pais_id)  # Redirigir de vuelta a la página de detalles del país
+        pais_nombre = request.POST.get('pais')  # Obtener el nombre del país del formulario POST
+        usuario = request.user
+        Favorito.objects.create(usuario=usuario, pais=pais_nombre)
+        return redirect('favoritos')  # Redirige al usuario a la página de favoritos después de agregar el país
+
     else:
         form = FavoritoForm()
     return render(request, 'añadir_favorito.html', {'form': form})
 
 def favoritos(request):
     favoritos_usuario = Favorito.objects.filter(usuario=request.user)
-    return render(request, 'favoritos.html', {'favoritos_usuario': favoritos_usuario})
+    return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
