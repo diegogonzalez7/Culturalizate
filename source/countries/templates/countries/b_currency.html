@@ -1,0 +1,14 @@
+{% extends 'countries/base.html' %}
+{% block title %}SEARCH BY CURRENCY{% endblock %}
+{% block content %}
+<h1>BÚSQUEDA POR MONEDA</h1>
+
+<div id="search-box">
+    <form id="search-form" method="post">
+        {% csrf_token %}
+        <input id="search-text" type="text" name="country_currency" placeholder="Buscar país por moneda">
+        <button id="search-button" type="submit">Buscar</button>
+    </form>
+</div>
+  
+{% endblock %}
