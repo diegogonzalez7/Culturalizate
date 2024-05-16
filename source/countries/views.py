@@ -51,27 +51,42 @@ def search_by_currency(request):
 
 def capital(request, capital): 
     try:
-        data=requests.get("https://restcountries.com/v3.1/capital/" + "%s" %capital).json()
-        template = loader.get_template("countries/capital.html")
-        context={
-            "data":data,
-        }
-        return HttpResponse(template.render(context,request))   
+        url = "https://restcountries.com/v3.1/capital/" + capital
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            template = loader.get_template("countries/capital.html")
+            context = {
+                "data": data,
+            }
+            return HttpResponse(template.render(context, request))
+        elif response.status_code == 404:
+            return render(request, 'countries/no_data.html')
+        else:
+            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
     except Exception as e:
-        # Manejo de errores en caso de problemas con la solicitud
-        return render(request, 'countries/no_data.html')
+        return HttpResponse("Error: {}".format(str(e)))
+
+
+
 
 def currency(request, currency): 
     try:    
-        data=requests.get("https://restcountries.com/v3.1/currency/" + "%s" %currency).json()
-        template = loader.get_template("countries/currency.html")
-        context={
-            "data":data,
-        }
-        return HttpResponse(template.render(context,request))
+        url = "https://restcountries.com/v3.1/currency/" + currency
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            template = loader.get_template("countries/currency.html")
+            context = {
+                "data": data,
+            }
+            return HttpResponse(template.render(context, request))
+        elif response.status_code == 404:
+            return render(request, 'countries/no_data.html')
+        else:
+            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
     except Exception as e:
-        # Manejo de errores en caso de problemas con la solicitud
-        return render(request, 'countries/no_data.html')    
+        return HttpResponse("Error: {}".format(str(e)))
 
 def sign_up(request):
     if request.method == 'POST':
@@ -85,28 +100,46 @@ def sign_up(request):
     return render(request, 'countries/sign_up.html', {"form": form})
 
 def detail(request, country):
-    try:    
-        data=requests.get("https://restcountries.com/v3.1/name/" + "%s" %country).json()
-        template = loader.get_template("countries/detail.html")
-        context={
-            "data":data,
-        }
-        return HttpResponse(template.render(context,request))
+    try:
+        url = "https://restcountries.com/v3.1/name/" + country
+        response = requests.get(url)
+        
+        # Verificar el código de estado de la respuesta
+        if response.status_code == 200:
+            data = response.json()
+            template = loader.get_template("countries/detail.html")
+            context = {
+                "data": data,
+            }
+            return HttpResponse(template.render(context, request))
+        elif response.status_code == 404:
+            # Si el código de estado es 404, renderizar la plantilla no_data.html
+            return render(request, 'countries/no_data.html')
+        else:
+            # Otro código de estado diferente de 200 o 404, manejar según sea necesario
+            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
     except Exception as e:
-        # Manejo de errores en caso de problemas con la solicitud
-        return render(request, 'countries/no_data.html')
+        # Manejo de otros errores
+        return HttpResponse("Error: {}".format(str(e)))
 
 def language(request, language): 
     try:        
-        data=requests.get("https://restcountries.com/v3.1/lang/" + "%s" %language).json()
-        template = loader.get_template("countries/language.html")
-        context={
-            "data":data,
-        }
-        return HttpResponse(template.render(context,request))
+        url = "https://restcountries.com/v3.1/lang/" + language
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            data = response.json()
+            template = loader.get_template("countries/language.html")
+            context = {
+                "data": data,
+            }
+            return HttpResponse(template.render(context, request))
+        elif response.status_code == 404:
+            return render(request, 'countries/no_data.html')
+        else:
+            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
     except Exception as e:
-        # Manejo de errores en caso de problemas con la solicitud
-        return render(request, 'countries/no_data.html')
+        return HttpResponse("Error: {}".format(str(e)))
 
 def añadir_favorito(request, pais_id):
     if request.method == 'POST':
