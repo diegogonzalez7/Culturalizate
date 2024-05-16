@@ -6,6 +6,7 @@ from .forms import RegisterForm
 from .forms import FavoritoForm
 from django.urls import reverse 
 from .models import Favorito
+import pandas as pd
 import requests
 
 
@@ -67,8 +68,8 @@ def capital(request, capital):
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
-
-
+def get_common_name(name_dict):
+    return name_dict['common']
 
 def currency(request, currency): 
     try:    
@@ -76,9 +77,16 @@ def currency(request, currency):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
+            #Pasamos a DataFrame con Pandas para ordenarlos
+            df = pd.DataFrame(data) 
+            df['common_name'] = df['name'].apply(get_common_name)
+            #Ordenamos los países según el nombre común
+            df_sorted = df.sort_values(by='common_name')
+            print(df_sorted)
+
             template = loader.get_template("countries/currency.html")
             context = {
-                "data": data,
+                "data": df_sorted.to_dict(orient='records'),
             }
             return HttpResponse(template.render(context, request))
         elif response.status_code == 404:
