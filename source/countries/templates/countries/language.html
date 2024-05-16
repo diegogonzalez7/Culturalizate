@@ -1,44 +1,47 @@
 
 {% extends 'countries/base.html' %}
-{% block title %}List of counties{% endblock %}
+{% block title %}Países por Idioma{% endblock %}
 {% block content %}
 <style>
-    h1 {
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .country-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        list-style-type: none;
+        padding: 0;
+    }
+    .country-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
     }
-
-    p {
-        text-align: center;
+    .country-item img {
+        max-width: 100px;
+        max-height: 100px;
+        margin-bottom: 10px;
     }
-
-    .country-name {
-        margin-top: 1.5em; 
-    }
-
-    .country-image {
-        margin-bottom: 1.5em; 
+    .country-item span {
+        font-size: 1.2em;
     }
 
 </style>
 <body>
-    <h1>Países por Idioma - {{ language }}</h1>
-
-    {% if countries_data %}
-    <h2>Países que hablan {{ language }}:</h2>
-    <ul>
-        {% for country in countries_data %}
-        <li>
-            <!-- Imagen del país -->
-            <img src="{{ country.flags.png }}" alt="{{ country.name.common }}">
-            <!-- Enlace al detalle del país -->
-            <a href="{% url 'countries:search_country' country.name.common %}">{{ country.name.common }}</a>
+    <h1>Este idioma se habla en:{{ language }}</h1>
+    <ul class="country-list">
+        {% for country in data %}
+        <li class="country-item">
+            <img src="{{ country.flags.svg }}" alt="Bandera de {{ country.name.common }}">
+            <span>{{ country.name.common }}</span>
         </li>
         {% endfor %}
     </ul>
-    {% endif %}
-
-    {% if error_message %}
-    <p>{{ error_message }}</p>
-    {% endif %}
 </body>
 </html>
+{% endblock %}

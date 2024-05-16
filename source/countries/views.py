@@ -19,6 +19,16 @@ def home(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/home.html')
 
+def search_by_language(request):
+    if request.method == 'POST':
+        # Obtener el término de búsqueda del formulario
+        language_name = request.POST.get('country_language', None) 
+        if language_name:
+            # Redirigir al usuario a la vista detail del país buscado
+            return redirect('countries:language', language=language_name)
+    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
+    return render(request, 'countries/b_idioma.html')       
+
 def sign_up(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -38,14 +48,13 @@ def detail(request, country):
     }
     return HttpResponse(template.render(context,request))
 
-def language(request, language):
+def language(request, language): 
     data=requests.get("https://restcountries.com/v3.1/lang/" + "%s" %language).json()
     template = loader.get_template("countries/language.html")
     context={
         "data":data,
     }
     return HttpResponse(template.render(context,request))
-
 def añadir_favorito(request, pais_id):
     if request.method == 'POST':
         form = FavoritoForm(request.POST)

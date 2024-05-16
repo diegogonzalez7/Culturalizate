@@ -1,0 +1,15 @@
+
+{% extends 'countries/base.html' %}
+{% block title %}SEARCH BY LANGUAGE{% endblock %}
+{% block content %}
+<h1>BÚSQUEDA POR IDIOMA</h1>
+
+<div id="search-box">
+    <form id="search-form" method="post">
+        {% csrf_token %}
+        <input id="search-text" type="text" name="country_language" placeholder="Buscar país por idioma">
+        <button id="search-button" type="submit">Buscar</button>
+    </form>
+</div>
+  
+{% endblock %}

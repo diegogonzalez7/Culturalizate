@@ -29,6 +29,16 @@ def sign_up(request):
 
     return render(request, 'registration/sign_up.html', {"form":form})
 
+def search_by_language(request):
+    if request.method == 'POST':
+        # Obtener el término de búsqueda del formulario
+        language_name = request.POST.get('country_language', None) 
+        if language_name:
+            # Redirigir al usuario a la vista detail del país buscado
+            return redirect('countries:language', language=language_name)
+    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
+    return render(request, 'countries/b_idioma.html')  
+
 def countries(request):
     data = requests.get("https://restcountries.com/v3.1/lang/spanish").json()
     return render(request, "countries/countries_data.html", {"con":data, "total":len(data)})
