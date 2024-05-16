@@ -1,4 +1,3 @@
-
 {% extends 'countries/base.html' %}
 {% block title %}SEARCH BY CAPITAL{% endblock %}
 {% block content %}
@@ -7,7 +6,7 @@
 <div id="search-box">
     <form id="search-form" method="post">
         {% csrf_token %}
-        <input id="search-text" type="text" name="country_capital" placeholder="Buscar país por idioma">
+        <input id="search-text" type="text" name="country_capital" placeholder="Buscar país por capital">
         <button id="search-button" type="submit">Buscar</button>
     </form>
 </div>
