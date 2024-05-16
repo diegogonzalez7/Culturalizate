@@ -1,11 +1,12 @@
 FROM python
 	WORKDIR /app
-	COPY source .
+	COPY ./requirements.txt .
+	RUN pip install -r requirements.txt
+	COPY . .
 	EXPOSE 8000
 	CMD ["./manage.py", "runserver", "0.0.0.0:8000"]
 
 ENV PYTHONUNBUFFERED 1
-
 
 
 # [Optional] If your requirements rarely change, uncomment this section to add them to the image.

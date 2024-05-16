@@ -6,7 +6,10 @@
  - Manuel Fontenlos Mato manuel.fontenlos@udc.es
  - Diego González González diego.gonzalez7@udc.es
 
-## Cómo ejecutar:
+## Ejecutar la aplicación en una imagen de docker:
+
+desde la carpeta principal ./run.sh o docker run -d -p 8000:8000 manufontenlos/countries
+
 
 ## Problemas conocidos:
 

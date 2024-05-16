@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker run -d -p 8000:8000 manufo/countries
+docker run -d -p 8000:8000 manufontenlos/countries
