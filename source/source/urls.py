@@ -30,8 +30,8 @@ urlpatterns = [
     path('apidata/', views.countries),
     path('language',views.search_by_language, name='search_by_language'),
     path('capital',views.search_by_capital, name='search_by_capital'),
-    path('currency',views.search_by_currency, name='search_by_currency')
-]
+    path('currency',views.search_by_currency, name='search_by_currency'),
+    path('favoritos',views.favoritos, name='favoritos')]
 """
 django.contrib.auth.urls incluye los siguientes patrones URL:
     /login/ [name='login']

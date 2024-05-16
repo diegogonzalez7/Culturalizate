@@ -62,3 +62,6 @@ def search_by_currency(request):
 def countries(request):
     data = requests.get("https://restcountries.com/v3.1/lang/spanish").json()
     return render(request, "countries/countries_data.html", {"con":data, "total":len(data)})
+
+def favoritos(request):
+    return redirect('countries:favoritos')
