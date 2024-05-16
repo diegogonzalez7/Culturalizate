@@ -14,4 +14,6 @@ urlpatterns = [
     path('favoritos/', views.favoritos, name='favoritos'),
     path('language',views.search_by_language, name='search_by_language'),
     path('language/<str:language>/', views.language, name='language'),
+    path('capital',views.search_by_capital, name='search_by_cappital'),
+    path('capital/<str:capital>/', views.capital, name='capital')
 ]

@@ -1,0 +1,112 @@
+{% extends 'countries/base.html' %}
+{% block title %}Country Detail{% endblock %}
+{% block content %}
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    .country-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .country-name {
+        margin-top: 1.5em; 
+        text-align: center;
+    }
+
+    .country-image {
+        margin-bottom: 1.5em; 
+        text-align: center;
+        border: 2px solid #000;
+        border-radius: 5px;
+    }
+
+    .country-details {
+        width: 80%;
+        margin: auto;
+        border-collapse: collapse;
+    }
+
+    .country-details th,
+    .country-details td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .country-details th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #f2f2f2;
+    }
+
+</style>
+<body>
+    {% for country in data %}
+        <div class="country-container">
+            <h1 class="country-name">{{ country.name.common | upper}}</h1>
+            <div class="country-image">
+                <img src="{{country.flags.png}}">
+            </div>
+            <table class="country-details">
+                <tr>
+                    <th>Capital</th>
+                    <td>{{ country.capital|join:', ' }}</td>
+                </tr>
+                <tr>
+                    <th>Divisa</th>
+                    <td>
+                        {% for key, value in country.currencies.items %}
+                            {{ value.name }} ({{ value.symbol }})
+                        {% endfor %}
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th>Continentes</th>
+                    <td>{{ country.continents|join:', ' }}</td>
+                </tr>
+                <tr>
+                    <th>Región</th>
+                    <td>{{ country.region }}</td>
+                </tr>
+                <tr>
+                    <th>Subregión</th>
+                    <td>{{ country.subregion }}</td>
+                </tr>
+                <tr>
+                    <th>Idiomas</th>
+                    <td>
+                        <ul>
+                            {% for key, value in country.languages.items %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>                
+                <tr>
+                    <th>Área (m²)</th>
+                    <td>{{ country.area }}</td>
+                </tr>
+                <tr>
+                    <th>Población</th>
+                    <td>{{ country.population }}</td>
+                </tr>
+                <tr>
+                    <th>Timezone</th>
+                    <td>{{ country.timezones|join:', ' }}</td>
+                </tr>
+            </table>
+            {% include 'countries/favoritos.html' %}
+        </div>
+    {% endfor %}
+</body>    
+{% endblock %}
+

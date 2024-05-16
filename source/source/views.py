@@ -39,6 +39,16 @@ def search_by_language(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/b_idioma.html')  
 
+def search_by_capital(request):
+    if request.method == 'POST':
+        # Obtener el término de búsqueda del formulario
+        capital_name = request.POST.get('country_capital', None) 
+        if capital_name:
+            # Redirigir al usuario a la vista detail del país buscado
+            return redirect('countries:capital', capital=capital_name)
+    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
+    return render(request, 'countries/b_capital.html')  
+
 def countries(request):
     data = requests.get("https://restcountries.com/v3.1/lang/spanish").json()
     return render(request, "countries/countries_data.html", {"con":data, "total":len(data)})

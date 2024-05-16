@@ -28,7 +28,8 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('sign_up', views.sign_up, name='sign_up'),
     path('apidata/', views.countries),
-    path('language',views.search_by_language, name='search_by_language')
+    path('language',views.search_by_language, name='search_by_language'),
+    path('capital',views.search_by_capital, name='search_by_capital')
 ]
 """
 django.contrib.auth.urls incluye los siguientes patrones URL:
