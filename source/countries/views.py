@@ -82,7 +82,6 @@ def currency(request, currency):
             df['common_name'] = df['name'].apply(get_common_name)
             #Ordenamos los países según el nombre común
             df_sorted = df.sort_values(by='common_name')
-            print(df_sorted)
 
             template = loader.get_template("countries/currency.html")
             context = {
@@ -137,10 +136,18 @@ def language(request, language):
         
         if response.status_code == 200:
             data = response.json()
-            template = loader.get_template("countries/language.html")
+
+            #Creamos dataframe para ordenar países por su nombre
+            df=pd.DataFrame(data)
+            df['common_name'] = df['name'].apply(get_common_name)
+            df_sorted = df.sort_values(by='common_name')
+
             context = {
-                "data": data,
+                "data": df_sorted.to_dict(orient='records'),
             }
+
+            template = loader.get_template("countries/language.html")
+
             return HttpResponse(template.render(context, request))
         elif response.status_code == 404:
             return render(request, 'countries/no_data.html')
