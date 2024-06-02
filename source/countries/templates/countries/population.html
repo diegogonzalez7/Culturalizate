@@ -1,0 +1,80 @@
+{% extends 'countries/base.html' %}
+{% block title %}PAÍSES POR POBLACIÓN{% endblock %}
+{% block content %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 1em;
+        font-weight: bold;
+        margin-bottom: 1em;
+        font-size: 2em;
+        color: #333;
+    }
+    .country-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .country-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+        list-style-type: none;
+        padding: 0;
+        width: 100%;
+        margin: auto;
+    }
+    .country-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .country-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .country-item img {
+        max-width: 100px;
+        max-height: 100px;
+        margin-bottom: 10px;
+        border: 2px solid #000;
+        border-radius: 5px;
+        transition: transform 0.2s;
+    }
+    .country-item:hover img {
+        transform: scale(1.05);
+    }
+    .country-item span {
+        font-size: 1.2em;
+        color: #555;
+    }
+</style>
+<body>
+    <h1>Países por Población</h1>
+    <div class="country-container">
+        <ul class="country-grid">
+            {% for country in data %}
+            <li class="country-item">
+                <img src="{{ country.flags.svg }}" alt="Bandera de {{ country.name.common }}">
+                <span>{{ country.name.common }}</span>
+                <span>Población: {{ country.population }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -19,6 +19,13 @@
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
 
+    h2 {
+        text-align: center;
+        margin-bottom: 2em;
+        font-size: 1.5em;
+        color: #555;
+    }
+
     #search-container {
         display: flex;
         flex-direction: column;
@@ -85,6 +92,8 @@
 <body>
     <div id="search-container">
         <h1>Busque países por idioma</h1>
+        <h2>Introduzca un idioma para obtener todos los países en los que se habla.
+        Por ejemplo: spanish, english</h2>
         <div id="search-box">
             <form id="search-form" method="post">
                 {% csrf_token %}

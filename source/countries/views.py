@@ -170,3 +170,6 @@ def añadir_favorito(request, pais_id):
 def favoritos(request):
     favoritos_usuario = Favorito.objects.filter(usuario=request.user)
     return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
+
+def order(request):
+    return render(request, 'order.html')

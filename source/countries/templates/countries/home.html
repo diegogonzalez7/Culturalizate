@@ -19,6 +19,13 @@
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
 
+    h2 {
+        text-align: center;
+        margin-bottom: 2em;
+        font-size: 1.5em;
+        color: #555;
+    }
+
     #search-container {
         display: flex;
         flex-direction: column;
@@ -85,10 +92,12 @@
 <body>
     <div id="search-container">
         <h1>Bienvenido a Culturalízate</h1>
+        <h2>Puede empezar a buscar países introduciendo su nombre en inglés.
+            Por ejemplo: Spain, Portugal</h2>
         <div id="search-box">
             <form id="search-form" method="post">
                 {% csrf_token %}
-                <input id="search-text" type="text" name="country_name" placeholder="Buscar país por nombre">
+                <input id="search-text" type="text" name="country_name" placeholder="Buscar país por su nombre">
                 <button id="search-button" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l-2-2m0 0l-5-5m7 7a7 7 0 0010-10 7 7 0 10-10 10zm-2 0V20h.01"/>
