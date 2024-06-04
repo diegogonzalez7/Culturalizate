@@ -4,7 +4,7 @@
 {% block content %}
 <form method="post">
 {% csrf_token %}{{form|crispy}}
-<p>¿Ya tienes cuenta? Iniciar <a href="/sign_up">aquí</a></p>
-<button type="submit" class="btn btn-success">Iniciar sesión</button>
+<p>¿Ya tienes cuenta? Inicia sesión <a href="/login">aquí</a></p>
+<button type="submit" class="btn btn-success">Crear usuario</button>
 </form>
 {% endblock %}
