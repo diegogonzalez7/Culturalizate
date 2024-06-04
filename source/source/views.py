@@ -60,6 +60,14 @@ def search_by_currency(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/b_currency.html')  
 
+def compare_countries(request):
+    if request.method == 'POST':
+        country1  = request.POST.get('country1', None)
+        country2  = request.POST.get('country2', None)
+        if country1 and country2:
+            return redirect('countries:comp_countries', country1=country1, country2=country2)
+    return render(request,'countries/b_comp_countries.html')
+
 def countries(request):
     data = requests.get("https://restcountries.com/v3.1/lang/spanish").json()
     return render(request, "countries/countries_data.html", {"con":data, "total":len(data)})
@@ -170,3 +178,6 @@ def order_by_area_desc(request):
     print(f"La vista order_by_area_desc tardó {tiempo_ejecucion} segundos en ejecutarse.")
 
     return render(request, 'countries/area.html', {'data': countries_sorted})
+
+
+

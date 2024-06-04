@@ -18,5 +18,6 @@ urlpatterns = [
     path('capital/<str:capital>/', views.capital, name='capital'),
     path('currency',views.search_by_currency, name='search_by_currency'),
     path('currency/<str:currency>/', views.currency, name='currency'),
-    path('añadir-favorito/', views.añadir_favorito, name='añadir_favorito')
+    path('añadir-favorito/', views.añadir_favorito, name='añadir_favorito'),
+    path('comp_countries/<str:country1>,<str:country2>/', views.comp_countries, name='comp_countries')
 ]

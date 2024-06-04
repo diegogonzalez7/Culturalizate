@@ -7,8 +7,22 @@ from .forms import FavoritoForm
 from django.urls import reverse 
 from .models import Favorito
 import pandas as pd
-import requests
+import requests, json
+import matplotlib.pyplot as plt
 
+def load_data():
+    try:
+        with open('all.json', 'r') as file:
+            data = json.load(file)
+            return data
+    except FileNotFoundError:
+        return []
+    
+def load_data_countries(json, country_name):
+        
+    for country in json:
+        if country['name']['common'] == country_name:
+            return country
 
 def home(request):
     if request.method == 'POST':
@@ -170,6 +184,65 @@ def añadir_favorito(request, pais_id):
 def favoritos(request):
     favoritos_usuario = Favorito.objects.filter(usuario=request.user)
     return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
+template = loader.get_template("countries/language.html")
 
-def order(request):
-    return render(request, 'order.html')
+def comp_countries(request, country1, country2):
+
+    try: 
+        
+        data=load_data()
+
+        data_country1=load_data_countries(data,country1)
+        data_country2=load_data_countries(data,country2)
+        
+        template = loader.get_template("countries/comp_countries.html")
+
+
+        data = {
+            'Country': [country1, country2],
+            'Population': [data_country1['population'], data_country2['population']],  # Población en millones
+            'Area': [data_country1['area'], data_country2['area']]  # Área en kilómetros cuadrados
+        }
+
+        df = pd.DataFrame(data)
+
+        # Calcular la densidad de población
+        df['Density'] = df['Population'] / df['Area']
+
+        # Gráfica de comparación de población
+        fig1, ax1 = plt.subplots(figsize=(10, 6))
+        ax1.bar(df['Country'], df['Population'], color='blue', label='Population')
+        ax1.set_xlabel('Country')
+        ax1.set_ylabel('Population')
+        ax1.set_title('Comparison of Population')
+        ax1.legend()
+
+        # Gráfica de comparación de área
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        ax2.bar(df['Country'], df['Area'], color='green', label='Area')
+        ax2.set_xlabel('Country')
+        ax2.set_ylabel('Area (sq km)')
+        ax2.set_title('Comparison of Area')
+        ax2.legend()
+
+        # Gráfica de comparación de densidad de población
+        fig3, ax3 = plt.subplots(figsize=(10, 6))
+        ax3.bar(df['Country'], df['Density'], color='red', label='Density')
+        ax3.set_xlabel('Country')
+        ax3.set_ylabel('Population Density (people per sq km)')
+        ax3.set_title('Comparison of Population Density')
+        ax3.legend()
+
+        # Guardar las figuras en archivos
+        fig1.savefig('countries/static/images/comparison_population.png')
+        fig2.savefig('countries/static/images/comparison_area.png')
+        fig3.savefig('countries/static/images/comparison_density.png')
+
+        context = {
+            "country1": data_country1,
+            "country2": data_country2
+        }
+        return HttpResponse(template.render(context, request))
+    
+    except Exception as e:
+        return HttpResponse("Error: {}".format(str(e)))    

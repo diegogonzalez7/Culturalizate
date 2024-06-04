@@ -36,7 +36,8 @@ urlpatterns = [
     path('population_asc/', views.order_by_pop_asc, name='order_by_pop_asc'),
     path('population_desc/', views.order_by_pop_desc, name='order_by_pop_desc'),
     path('area_asc/', views.order_by_area_asc, name='order_by_area_asc'),
-    path('area_desc/', views.order_by_area_desc, name='order_by_area_desc')]
+    path('area_desc/', views.order_by_area_desc, name='order_by_area_desc'),
+    path('comp_countries', views.compare_countries, name='compare')]
 """
 django.contrib.auth.urls incluye los siguientes patrones URL:
     /login/ [name='login']
