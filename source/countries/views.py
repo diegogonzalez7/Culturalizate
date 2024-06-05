@@ -10,6 +10,10 @@ import threading
 import pandas as pd
 import requests, json, time
 import matplotlib.pyplot as plt
+from requests_oauthlib import OAuth1
+import time
+import uuid
+from urllib.parse import parse_qs
 
 def load_data():
     try:
@@ -19,11 +23,16 @@ def load_data():
     except FileNotFoundError:
         return []
     
-def load_data_countries(json, country_name):
-        
+def load_data_countries(json, country_name):   
+
     for country in json:
+        common_names = [value["common"] for key, value in country["translations"].items()] 
         if country['name']['common'] == country_name:
             return country
+        for common_name in common_names:
+            if common_name == country_name:
+                return country
+    return {}  
 
 def home(request):
     if request.method == 'POST':
@@ -297,3 +306,27 @@ def comp_countries(request, country1, country2):
     
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))    
+    
+
+def upload(request):
+
+    # Claves del consumidor 
+    consumer_key = "6bb7d5f2ac85fca1ed7331944d347df2"
+    consumer_secret = '081941db6293c397'
+
+    #Claves del cliente
+    oauth_token='72157720919853797-aad34a9ab48e0d5e'
+    oauth_token_secret='299eddf842906344'
+
+    oauth = OAuth1(client_key=consumer_key,
+        client_secret=consumer_secret,
+        resource_owner_key=oauth_token,
+        resource_owner_secret=oauth_token_secret)
+
+    upload_url = 'https://up.flickr.com/services/upload/'
+
+    with open(photo, 'rb') as photo:
+        files = {'photo': photo}
+        response = requests.post(upload_url, files=files, auth=oauth)
+
+    return render(request, 'countries/upload.html') 

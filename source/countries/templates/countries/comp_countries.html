@@ -51,6 +51,26 @@
 .nav-bar button:hover {
     background-color: #45a049;
 }
+
+.container2 {
+    text-align: center;
+    margin:50px 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
 </style>
 
 <body>
@@ -67,6 +87,13 @@
                 <button onclick="changeImage(0)">Area</button>
                 <button onclick="changeImage(1)">Population</button>
                 <button onclick="changeImage(2)">Density</button>
+            </div>
+        
+            <div class="container2">
+                <form id="uploadForm" action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Subir Fotos a Flickr</button>
+                </form>
             </div>
         </div>
         <div class="columna">
@@ -88,6 +115,8 @@
             centerImage.src = images[imageNumber];
         }
     </script>
+
+
 </body>
 </html>
 
