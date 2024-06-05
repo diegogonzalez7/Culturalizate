@@ -31,6 +31,7 @@
     .country-details {
         width: 80%;
         margin: auto;
+        margin-bottom: 3em;
         border-collapse: collapse;
     }
 
@@ -38,6 +39,7 @@
     .country-details td {
         border: 1px solid #ddd;
         padding: 8px;
+        text-align: center;
     }
 
     .country-details th {
@@ -49,8 +51,9 @@
 
 </style>
 <body>
-    {% for country in data %}
-        <div class="country-container">
+    <div class="country-container">
+        {% for country in country_data %}
+            <!-- Datos sobre el país de la capital -->
             <h1 class="country-name">{{ country.name.common | upper}}</h1>
             <div class="country-image">
                 <img src="{{country.flags.png}}">
@@ -104,9 +107,26 @@
                     <td>{{ country.timezones|join:', ' }}</td>
                 </tr>
             </table>
-            {% include 'countries/favoritos.html' %}
-        </div>
-    {% endfor %}
+        {% endfor %}
+        
+        <!-- Pronóstico diario del clima -->
+        <h2>Pronóstico Diario del Clima</h2>
+        <table class="country-details">
+            <tr>
+                <th>Fecha</th>
+                <th>Temperatura Máxima (°C)</th>
+                <th>Temperatura Mínima (°C)</th>
+                <th>Temperatura Promedio (°C)</th>
+            </tr>
+            {% for forecast in forecast_data %}
+            <tr>
+                <td>{{ forecast.datetime }}</td>
+                <td>{{ forecast.tempmax }} °C</td>
+                <td>{{ forecast.tempmin }} °C</td>
+                <td>{{ forecast.temp }} °C</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>    
 {% endblock %}
-

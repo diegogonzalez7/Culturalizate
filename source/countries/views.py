@@ -6,8 +6,9 @@ from .forms import RegisterForm
 from .forms import FavoritoForm
 from django.urls import reverse 
 from .models import Favorito
+import threading
 import pandas as pd
-import requests, json
+import requests, json, time
 import matplotlib.pyplot as plt
 
 def load_data():
@@ -64,23 +65,73 @@ def search_by_currency(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/b_currency.html')  
 
-def capital(request, capital): 
+def capital(request, capital):
+    start_time = time.time()
     try:
-        url = "https://restcountries.com/v3.1/capital/" + capital
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
+        country_data = None
+        weather_data = None
+        
+        # Definir funciones para las solicitudes a las APIs
+        def get_country_data():
+            nonlocal country_data
+            try:
+                url = "https://restcountries.com/v3.1/capital/" + capital
+                response = requests.get(url)
+                if response.status_code == 200:
+                    country_data = response.json()
+                elif response.status_code == 404:
+                    return render(request, 'countries/no_data.html')
+                else:
+                    return HttpResponse("Error en la solicitud a la primera API: {}".format(response.status_code))
+            except Exception as e:
+                return HttpResponse("Error en la solicitud a la primera API: {}".format(str(e)))
+        
+        def get_weather_data():
+            nonlocal weather_data
+            try:
+                url2 = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + capital + "?key=MCG5889NUL2TSVERVHZGWX4VF"
+                response2 = requests.get(url2)
+                if response2.status_code == 200:
+                    weather_data = response2.json()
+                elif response2.status_code == 404:
+                    return render(request, 'countries/no_data.html')
+                else:
+                    return HttpResponse("Error en la solicitud a la segunda API: {}".format(response2.status_code))
+            except Exception as e:
+                return HttpResponse("Error en la solicitud a la segunda API: {}".format(str(e)))
+
+        # Crear threads para realizar las solicitudes a las APIs
+        thread1 = threading.Thread(target=get_country_data)
+        thread2 = threading.Thread(target=get_weather_data)
+        
+        # Iniciar los threads
+        thread1.start()
+        thread2.start()
+        
+        # Esperar a que los threads terminen
+        thread1.join()
+        thread2.join()
+        end_time = time.time()
+        
+        if weather_data:
+            df_forecast = pd.DataFrame(weather_data.get('days', [])[:7])
+
+            df_forecast['tempmax'] = round((df_forecast['tempmax'] - 32) * 5/9, 1)
+            df_forecast['tempmin'] = round((df_forecast['tempmin'] - 32) * 5/9,1)
+            df_forecast['temp'] = round((df_forecast['temp'] - 32) * 5/9, 1)
+
+            forecast_data = df_forecast.to_dict(orient='records')
+
             template = loader.get_template("countries/capital.html")
             context = {
-                "data": data,
+                "country_data": country_data,
+                "forecast_data": forecast_data,
             }
+            print(end_time-start_time)
             return HttpResponse(template.render(context, request))
-        elif response.status_code == 404:
-            return render(request, 'countries/no_data.html')
-        else:
-            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
+
 
 def get_common_name(name_dict):
     return name_dict['common']
