@@ -2,8 +2,20 @@
 {% block title %}Country Detail{% endblock %}
 {% block content %}
 <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+
     h1 {
         text-align: center;
+        margin-top: 0.5em;
+        font-weight: bold;
+        margin-bottom: 0.5em;
+        font-size: 2.5em;
+        color: #333;
     }
 
     p {
@@ -45,7 +57,7 @@
     .country-details th {
         padding-top: 12px;
         padding-bottom: 12px;
-        text-align: left;
+        text-align: center;
         background-color: #f2f2f2;
     }
 
@@ -110,13 +122,14 @@
         {% endfor %}
         
         <!-- Pronóstico diario del clima -->
-        <h2>Pronóstico Diario del Clima</h2>
+        <h2>Pronóstico climático semanal en {{ country_data.0.capital.0}}</h2>
         <table class="country-details">
             <tr>
                 <th>Fecha</th>
                 <th>Temperatura Máxima (°C)</th>
                 <th>Temperatura Mínima (°C)</th>
                 <th>Temperatura Promedio (°C)</th>
+                <th>Descripción</th>
             </tr>
             {% for forecast in forecast_data %}
             <tr>
@@ -124,6 +137,7 @@
                 <td>{{ forecast.tempmax }} °C</td>
                 <td>{{ forecast.tempmin }} °C</td>
                 <td>{{ forecast.temp }} °C</td>
+                <td>{{ forecast.description}}</td>
             </tr>
             {% endfor %}
         </table>
