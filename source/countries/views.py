@@ -45,15 +45,6 @@ def home(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/home.html')
 
-def search_by_language(request):
-    if request.method == 'POST':
-        # Obtener el término de búsqueda del formulario
-        language_name = request.POST.get('country_language', None) 
-        if language_name:
-            # Redirigir al usuario a la vista detail del país buscado
-            return redirect('countries:language', language=language_name)
-    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
-    return render(request, 'countries/b_idioma.html')  
 
 def search_by_currency(request):
     if request.method == 'POST':
@@ -64,14 +55,6 @@ def search_by_currency(request):
             return redirect('countries:currency', currency=currency_name)
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/b_currency.html')  
-
-def load_data():
-    try:
-        with open('all.json', 'r') as file:
-            data = json.load(file)
-            return data
-    except FileNotFoundError:
-        return []
 
 def get_common_name(name_dict):
     return name_dict['common']
@@ -164,36 +147,6 @@ def detail(request, country):
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
-
-def language(request, language): 
-    start_time = time.time()
-    try:        
-        url = "https://restcountries.com/v3.1/lang/" + language
-        response = requests.get(url)
-        
-        if response.status_code == 200:
-            data = response.json()
-
-            #Creamos dataframe para ordenar países por su nombre
-            df=pd.DataFrame(data)
-            df['common_name'] = df['name'].apply(get_common_name)
-            df_sorted = df.sort_values(by='common_name')
-
-            context = {
-                "data": df_sorted.to_dict(orient='records'),
-            }
-            end_time = time.time()
-            print(end_time - start_time)
-            template = loader.get_template("countries/language.html")
-
-            return HttpResponse(template.render(context, request))
-        elif response.status_code == 404:
-            return render(request, 'countries/no_data.html')
-        else:
-            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
-    except Exception as e:
-        return HttpResponse("Error: {}".format(str(e)))
-
 def añadir_favorito(request, pais_id):
     if request.method == 'POST':
         pais_nombre = request.POST.get('pais')  # Obtener el nombre del país del formulario POST
@@ -205,10 +158,6 @@ def añadir_favorito(request, pais_id):
         form = FavoritoForm()
     return render(request, 'añadir_favorito.html', {'form': form})
 
-def favoritos(request):
-    favoritos_usuario = Favorito.objects.filter(usuario=request.user)
-    return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
-template = loader.get_template("countries/language.html")
 
 def comp_countries(request, country1, country2):
 

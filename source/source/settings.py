@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5', #Para los formularios
     'users',
     'order',
-    'capitals'
+    'capitals',
+    'languages'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
