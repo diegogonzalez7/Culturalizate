@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'countries.apps.CountriesConfig', #clase dentro de countries/apps.py
     'crispy_forms',
     'crispy_bootstrap5', #Para los formularios
+    'users'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

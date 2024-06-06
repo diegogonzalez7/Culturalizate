@@ -174,17 +174,6 @@ def currency(request, currency):
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
-def sign_up(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return HttpResponseRedirect('/home')  # Redirige a la página de inicio después de registrarse
-    else:
-        form = RegisterForm()
-    return render(request, 'countries/sign_up.html', {"form": form})
-
 def detail(request, country):
     try:
         url = "https://restcountries.com/v3.1/name/" + country
