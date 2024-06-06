@@ -14,9 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import include,path
-from django.contrib.auth.views import LogoutView
 from . import views
 
 urlpatterns = [
@@ -24,16 +22,12 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('countries/', include('countries.urls')),
     path('users/', include('users.urls')),
+    path('order/', include('order.urls')),
     path("home/", include('countries.urls')),
     path('language',views.search_by_language, name='search_by_language'),
     path('capital',views.search_by_capital, name='search_by_capital'),
     path('currency',views.search_by_currency, name='search_by_currency'),
     path('favoritos',views.favoritos, name='favoritos'),
-    path('order', views.order, name='order'),
-    path('population_asc/', views.order_by_pop_asc, name='order_by_pop_asc'),
-    path('population_desc/', views.order_by_pop_desc, name='order_by_pop_desc'),
-    path('area_asc/', views.order_by_area_asc, name='order_by_area_asc'),
-    path('area_desc/', views.order_by_area_desc, name='order_by_area_desc'),
     path('comp_countries', views.compare_countries, name='compare'),
     path('upload', views.upload, name='upload')
     ]

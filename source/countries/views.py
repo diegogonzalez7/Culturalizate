@@ -174,28 +174,6 @@ def currency(request, currency):
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
-def detail(request, country):
-    try:
-        url = "https://restcountries.com/v3.1/name/" + country
-        response = requests.get(url)
-        
-        # Verificar el código de estado de la respuesta
-        if response.status_code == 200:
-            data = response.json()
-            template = loader.get_template("countries/detail.html")
-            context = {
-                "data": data,
-            }
-            return HttpResponse(template.render(context, request))
-        elif response.status_code == 404:
-            # Si el código de estado es 404, renderizar la plantilla no_data.html
-            return render(request, 'countries/no_data.html')
-        else:
-            # Otro código de estado diferente de 200 o 404, manejar según sea necesario
-            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
-    except Exception as e:
-        # Manejo de otros errores
-        return HttpResponse("Error: {}".format(str(e)))
     
 def detail(request, country):
     start_time = time.time()
