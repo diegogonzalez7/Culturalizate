@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 from requests_oauthlib import OAuth1
 import time
 from urllib.parse import parse_qs
+# pip install googletrans==4.0.0-rc1
+from googletrans import Translator
 
 def load_data():
     try:
@@ -73,27 +75,29 @@ def search_by_currency(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/b_currency.html')  
 
+def load_data():
+    try:
+        with open('all.json', 'r') as file:
+            data = json.load(file)
+            return data
+    except FileNotFoundError:
+        return []
+
+
 def capital(request, capital):
     start_time = time.time()
     try:
         country_data = None
         weather_data = None
-        
-        # Definir funciones para las solicitudes a las APIs
-        def get_country_data():
-            nonlocal country_data
-            try:
-                url = "https://restcountries.com/v3.1/capital/" + capital
-                response = requests.get(url)
-                if response.status_code == 200:
-                    country_data = response.json()
-                elif response.status_code == 404:
-                    return render(request, 'countries/no_data.html')
-                else:
-                    return HttpResponse("Error en la solicitud a la primera API: {}".format(response.status_code))
-            except Exception as e:
-                return HttpResponse("Error en la solicitud a la primera API: {}".format(str(e)))
-        
+
+        # Obtener datos del JSON
+        countries_data = load_data()  # Supongo que tienes una función llamada load_data()
+
+        country_data = next((country for country in countries_data if capital in country.get('capital', [])), None)
+
+        if not country_data:
+            return render(request, 'countries/no_data.html')
+
         def get_weather_data():
             nonlocal weather_data
             try:
@@ -108,19 +112,11 @@ def capital(request, capital):
             except Exception as e:
                 return HttpResponse("Error en la solicitud a la segunda API: {}".format(str(e)))
 
-        # Crear threads para realizar las solicitudes a las APIs
-        thread1 = threading.Thread(target=get_country_data)
-        thread2 = threading.Thread(target=get_weather_data)
-        
-        # Iniciar los threads
+        thread1 = threading.Thread(target=get_weather_data)
         thread1.start()
-        thread2.start()
-        
-        # Esperar a que los threads terminen
         thread1.join()
-        thread2.join()
-        end_time = time.time()
-        
+        print(country_data)
+
         if weather_data:
             df_forecast = pd.DataFrame(weather_data.get('days', [])[:7])
 
@@ -128,17 +124,20 @@ def capital(request, capital):
             df_forecast['tempmin'] = round((df_forecast['tempmin'] - 32) * 5/9,1)
             df_forecast['temp'] = round((df_forecast['temp'] - 32) * 5/9, 1)
 
+            translator = Translator()
+            df_forecast['description'] = df_forecast['description'].apply(lambda x: translator.translate(x, src='en', dest='es').text)
+
+
             forecast_data = df_forecast.to_dict(orient='records')
-            print(country_data)
-            print(forecast_data)
 
             template = loader.get_template("countries/capital.html")
             context = {
                 "country_data": country_data,
                 "forecast_data": forecast_data,
             }
-            print(end_time-start_time)
-            return HttpResponse(template.render(context, request))
+        end_time = time.time()
+        print(end_time-start_time)
+        return HttpResponse(template.render(context, request))
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
@@ -174,28 +173,25 @@ def currency(request, currency):
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
-    
+
 def detail(request, country):
     start_time = time.time()
     try:
         country_data = None
         weather_data = None
-        
-        # Definir funciones para las solicitudes a las APIs
-        def get_country_data():
-            nonlocal country_data
-            try:
-                url = "https://restcountries.com/v3.1/name/" + country
-                response = requests.get(url)
-                if response.status_code == 200:
-                    country_data = response.json()
-                elif response.status_code == 404:
-                    return render(request, 'countries/no_data.html')
-                else:
-                    return HttpResponse("Error en la solicitud a la primera API: {}".format(response.status_code))
-            except Exception as e:
-                return HttpResponse("Error en la solicitud a la primera API: {}".format(str(e)))
-        
+
+        # Obtener datos del JSON
+        countries_data = load_data()  # Supongo que tienes una función llamada load_data()
+
+        for country_item in countries_data:
+            if country_item['name']['common'].lower() == country.lower():
+                country_data = country_item
+                break
+
+
+        if not country_data:
+            return render(request, 'countries/no_data.html')
+
         def get_weather_data():
             nonlocal weather_data
             try:
@@ -210,19 +206,10 @@ def detail(request, country):
             except Exception as e:
                 return HttpResponse("Error en la solicitud a la segunda API: {}".format(str(e)))
 
-        # Crear threads para realizar las solicitudes a las APIs
-        thread1 = threading.Thread(target=get_country_data)
-        thread2 = threading.Thread(target=get_weather_data)
-        
-        # Iniciar los threads
+        thread1 = threading.Thread(target=get_weather_data)
         thread1.start()
-        thread2.start()
-        
-        # Esperar a que los threads terminen
         thread1.join()
-        thread2.join()
-        end_time = time.time()
-        
+
         if weather_data:
             df_forecast = pd.DataFrame(weather_data.get('days', [])[:7])
 
@@ -230,19 +217,22 @@ def detail(request, country):
             df_forecast['tempmin'] = round((df_forecast['tempmin'] - 32) * 5/9,1)
             df_forecast['temp'] = round((df_forecast['temp'] - 32) * 5/9, 1)
 
+            translator = Translator()
+            df_forecast['description'] = df_forecast['description'].apply(lambda x: translator.translate(x, src='en', dest='es').text)
+
             forecast_data = df_forecast.to_dict(orient='records')
-            print(country_data)
-            print(forecast_data)
 
             template = loader.get_template("countries/detail.html")
             context = {
                 "country_data": country_data,
                 "forecast_data": forecast_data,
             }
+            end_time = time.time()
             print(end_time-start_time)
             return HttpResponse(template.render(context, request))
     except Exception as e:
-        return HttpResponse("Error: {}".format(str(e)))    
+        return HttpResponse("Error: {}".format(str(e)))
+
 
 def language(request, language): 
     start_time = time.time()

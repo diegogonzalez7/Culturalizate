@@ -64,65 +64,62 @@
 </style>
 <body>
     <div class="country-container">
-        {% for country in country_data %}
-            <!-- Datos sobre el país de la capital -->
-            <h1 class="country-name">{{ country.name.common | upper}}</h1>
-            <div class="country-image">
-                <img src="{{country.flags.png}}">
-            </div>
-            <table class="country-details">
-                <tr>
-                    <th>Capital</th>
-                    <td>{{ country.capital|join:', ' }}</td>
-                </tr>
-                <tr>
-                    <th>Divisa</th>
-                    <td>
-                        {% for key, value in country.currencies.items %}
-                            {{ value.name }} ({{ value.symbol }})
+        <!-- Datos sobre el país de la capital -->
+        <h1 class="country-name">{{ country_data.name.common | upper}}</h1>
+        <div class="country-image">
+            <img src="{{country_data.flags.png}}">
+        </div>
+        <table class="country-details">
+            <tr>
+                <th>Capital</th>
+                <td>{{ country_data.capital|join:', ' }}</td>
+            </tr>
+            <tr>
+                <th>Divisa</th>
+                <td>
+                    {% for key, value in country_data.currencies.items %}
+                        {{ value.name }} ({{ value.symbol }})
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Continentes</th>
+                <td>{{ country_data.continents|join:', ' }}</td>
+            </tr>
+            <tr>
+                <th>Región</th>
+                <td>{{ country_data.region }}</td>
+            </tr>
+            <tr>
+                <th>Subregión</th>
+                <td>{{ country_data.subregion }}</td>
+            </tr>
+            <tr>
+                <th>Idiomas</th>
+                <td>
+                    <ul>
+                        {% for key, value in country_data.languages.items %}
+                            <li>{{ value }}</li>
                         {% endfor %}
-                    </td>
-                </tr>
-                
-                <tr>
-                    <th>Continentes</th>
-                    <td>{{ country.continents|join:', ' }}</td>
-                </tr>
-                <tr>
-                    <th>Región</th>
-                    <td>{{ country.region }}</td>
-                </tr>
-                <tr>
-                    <th>Subregión</th>
-                    <td>{{ country.subregion }}</td>
-                </tr>
-                <tr>
-                    <th>Idiomas</th>
-                    <td>
-                        <ul>
-                            {% for key, value in country.languages.items %}
-                                <li>{{ value }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>                
-                <tr>
-                    <th>Área (m²)</th>
-                    <td>{{ country.area }}</td>
-                </tr>
-                <tr>
-                    <th>Población</th>
-                    <td>{{ country.population }}</td>
-                </tr>
-                <tr>
-                    <th>Timezone</th>
-                    <td>{{ country.timezones|join:', ' }}</td>
-                </tr>
-            </table>
-        {% endfor %}
+                    </ul>
+                </td>
+            </tr>                
+            <tr>
+                <th>Área (m²)</th>
+                <td>{{ country_data.area }}</td>
+            </tr>
+            <tr>
+                <th>Población</th>
+                <td>{{ country_data.population }}</td>
+            </tr>
+            <tr>
+                <th>Timezone</th>
+                <td>{{ country_data.timezones|join:', ' }}</td>
+            </tr>
+        </table>
         
         <!-- Pronóstico diario del clima -->
-        <h2>Pronóstico climático semanal en {{ country_data.0.capital.0}}</h2>
+        <h2>Pronóstico climático semanal en {{ country_data.capital.0 }}</h2>
         <table class="country-details">
             <tr>
                 <th>Fecha</th>
@@ -137,10 +134,11 @@
                 <td>{{ forecast.tempmax }} °C</td>
                 <td>{{ forecast.tempmin }} °C</td>
                 <td>{{ forecast.temp }} °C</td>
-                <td>{{ forecast.description}}</td>
+                <td>{{ forecast.description }}</td>
             </tr>
             {% endfor %}
         </table>
     </div>
-</body>    
+</body>
+    
 {% endblock %}
