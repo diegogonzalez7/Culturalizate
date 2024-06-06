@@ -146,7 +146,8 @@ def capital(request, capital):
 def get_common_name(name_dict):
     return name_dict['common']
 
-def currency(request, currency): 
+def currency(request, currency):
+    start_time = time.time() 
     try:    
         url = "https://restcountries.com/v3.1/currency/" + currency
         response = requests.get(url)
@@ -157,6 +158,9 @@ def currency(request, currency):
             df['common_name'] = df['name'].apply(get_common_name)
             #Ordenamos los países según el nombre común
             df_sorted = df.sort_values(by='common_name')
+
+            end_time = time.time()
+            print(end_time - start_time)
 
             template = loader.get_template("countries/currency.html")
             context = {
@@ -274,6 +278,7 @@ def detail(request, country):
         return HttpResponse("Error: {}".format(str(e)))    
 
 def language(request, language): 
+    start_time = time.time()
     try:        
         url = "https://restcountries.com/v3.1/lang/" + language
         response = requests.get(url)
@@ -289,7 +294,8 @@ def language(request, language):
             context = {
                 "data": df_sorted.to_dict(orient='records'),
             }
-
+            end_time = time.time()
+            print(end_time - start_time)
             template = loader.get_template("countries/language.html")
 
             return HttpResponse(template.render(context, request))

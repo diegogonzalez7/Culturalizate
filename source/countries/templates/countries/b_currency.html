@@ -2,6 +2,12 @@
 {% block title %}Búsqueda por Moneda{% endblock %}
 {% block content %}
 <style>
+    #spinner-container {
+        display: none;
+        text-align: center;
+        margin-top: 20px; /* Ajuste el margen superior según sea necesario */
+    }
+    
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f0f2f5;
@@ -106,6 +112,25 @@
                 </button>
             </form>
         </div>
+        <div id="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Obteniendo datos de RestCountries...</span>
+            </div>
+            <p>Obteniendo datos de RestCountries...</p>
+        </div>
     </div>
+
+    <script>
+        // Muestra el spinner de carga al enviar el formulario
+        document.getElementById("search-form").addEventListener("submit", function(event) {
+            document.getElementById("spinner-container").style.display = "block";
+            // Evita el envío del formulario mientras se muestra el spinner
+            event.preventDefault();
+            // Envía el formulario manualmente después de un breve retraso
+            setTimeout(function() {
+                document.getElementById("search-form").submit();
+            }, 1000); // Ajusta el tiempo según sea necesario para dar tiempo suficiente para mostrar el spinner
+        });
+    </script>
 </body>
 {% endblock %}
