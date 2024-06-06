@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'users',
     'order',
     'capitals',
-    'languages'
+    'languages',
+    'compare.apps.CompareConfig',
+    'upload.apps.UploadConfig'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

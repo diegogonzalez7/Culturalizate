@@ -25,11 +25,11 @@ urlpatterns = [
     path('order/', include('order.urls')),
     path('capitals/', include('capitals.urls')),
     path('languages/', include('languages.urls')),
+    path('upload/', include('upload.urls')),
+    path('comp_countries/', include('compare.urls')),
     path("home/", include('countries.urls')),
     path('currency',views.search_by_currency, name='search_by_currency'),
     path('favoritos',views.favoritos, name='favoritos'),
-    path('comp_countries', views.compare_countries, name='compare'),
-    path('upload', views.upload, name='upload')
     ]
 """
 django.contrib.auth.urls incluye los siguientes patrones URL:
