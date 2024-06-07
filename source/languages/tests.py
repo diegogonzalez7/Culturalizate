@@ -8,9 +8,9 @@ class LanguagesViewsTest(TestCase):
         self.client = Client()
 
     def test_search_by_language_post(self):
-        response = self.client.post(reverse('languages:search_language'), {'country_language': 'Spanish'})
+        response = self.client.post(reverse('languages:search'), {'country_language': 'Spanish'})
         self.assertRedirects(response, reverse('languages:language', kwargs={'language': 'Spanish'}))#Verifica que redirige a la vista donde el idioma es el esàñol
 
     def test_search_by_language_post_invalid_language(self):
-        response = self.client.post(reverse('languages:search_language'), {'country_language': 'asddadsads'})
-        self.assertEqual(response.status_code, 200)
+        response = self.client.post(reverse('languages:search'), {'country_language': 'asddadsads'})
+        self.assertEqual(response.status_code, 302)

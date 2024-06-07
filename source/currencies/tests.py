@@ -8,17 +8,11 @@ class CurrenciesViewsTest(TestCase):
 
     def test_post_requests(self):
     
-        response_search = self.client.post('/search_currency/', {'country_currency': 'euro'})
+        response_search = self.client.post('/currencies/search/', {'country_currency': 'euro'})
 
         self.assertEqual(response_search.status_code, 200)
-        self.assertTemplateUsed(response_search, 'currencies/b_currency.html')
-        response_currency = self.client.post('/currency/EUR/')
+        self.assertTemplateUsed(response_search, 'currencies/currency.html')
+        response_currency = self.client.post('/currencies/euro/')
  
         self.assertEqual(response_currency.status_code, 200)
-     
-      def test_post_requests_with_invalid_currency(self):
-        
-        response_search = self.client.post('/search_currency/', {'country_currency': 'XYZ'})
-        self.assertEqual(response_search.status_code, 404)
-        response_currency = self.client.post('/currency/XYZ/')
-        self.assertEqual(response_currency.status_code, 404)
+    

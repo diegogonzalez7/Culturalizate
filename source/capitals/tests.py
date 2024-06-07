@@ -13,8 +13,9 @@ class CapitalsTest(TestCase):
 	def test_badnameofcapital(self):
 		
 		resp = self.c.post("/search/", {"country_capital": "dasdasdas"})
-        	self.assertEquals(resp.status_code, 404)
-        	
-        def test_ok(self):
-        	resp = self.c.post("/search/", {"country_capital": "MADRID"})
-        	self.assertEquals(resp.status_code, 200)
+		self.assertTemplateUsed(resp, 'countries/no_data.html')
+
+	def test_ok(self):
+    	
+		resp = self.c.post("/search/", {"country_capital": "Madrid"})
+		self.assertEquals(resp.status_code, 200)

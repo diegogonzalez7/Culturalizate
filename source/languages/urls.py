@@ -6,6 +6,6 @@ from . import views
 app_name= 'languages'
 
 urlpatterns = [
-    path('search', views.search_by_language, name='search_by_language'),
+    path('search', views.search_by_language, name='search'),
     path('<str:language>/', views.language, name='language'),
 ]

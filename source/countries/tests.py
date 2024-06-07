@@ -14,6 +14,6 @@ class CountriesViewsTest(TestCase):
     def test_detail_view_invalid_post(self):
         response = self.client.post('/detail/', {'country_name': 'dadasdadasdas'})
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('countries:no_data'))
+        self.assertTemplateUsed(response, 'countries/no_data.html')
 
 

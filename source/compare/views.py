@@ -46,6 +46,9 @@ def comp_countries(request, country1, country2):
         
         template = loader.get_template("compare/comp_countries.html")
 
+        if(data_country1=={} or data_country2=={}):
+            return render(request,"countries/no_data.html")
+
 
         data = {
             'Country': [country1, country2],
