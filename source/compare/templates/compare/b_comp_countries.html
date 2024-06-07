@@ -1,5 +1,5 @@
 {% extends 'countries/base.html' %}
-{% block title %}COMPARACIÓN DE PAÍSES {% endblock %}
+{% block title %}Comparación de países{% endblock %}
 {% block content %}
 <style>
     body {
@@ -22,6 +22,12 @@
 
     h2 {
         text-align: center;
+        font-size: 1.5em;
+        color: #555;
+        width: 100%;
+    }
+    h3 {
+        text-align: center;
         margin-bottom: 2em;
         font-size: 1.5em;
         color: #555;
@@ -34,8 +40,8 @@
     <div id="search-container">
         <h1>Compara datos de dos países</h1>
         <h2>Introduzca el nombre de dos países para ver la comparación de los datos 
-            de ambos. Por ejemplo: Brasil y Alemania.
-        </h2>
+            de ambos.</h2>
+        <h3>Por ejemplo: Brasil y Alemania</h3>
         <div id="search-box">
             <form id="search-form" method="post">
                 {% csrf_token %}

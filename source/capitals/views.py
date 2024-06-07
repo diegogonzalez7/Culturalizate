@@ -8,6 +8,25 @@ import time
 # pip install googletrans==4.0.0-rc1
 from googletrans import Translator
 
+def load_data():
+    try:
+        with open('all.json', 'r') as file:
+            data = json.load(file)
+            return data
+    except FileNotFoundError:
+        return []
+    
+def load_data_countries(json, country_name):   
+
+    for country in json:
+        common_names = [value["common"] for key, value in country["translations"].items()] 
+        if country['name']['common'] == country_name:
+            return country
+        for common_name in common_names:
+            if common_name == country_name:
+                return country
+    return {}
+
 def search_by_capital(request):
     if request.method == 'POST':
         # Obtener el término de búsqueda del formulario
@@ -17,15 +36,6 @@ def search_by_capital(request):
             return redirect('capitals:capital', capital=capital_name)
     # Si no hay búsqueda o es una solicitud GET, renderizar la página b_capital
     return render(request, 'capitals/b_capital.html')  
-
-def load_data():
-    try:
-        with open('all.json', 'r') as file:
-            data = json.load(file)
-            return data
-    except FileNotFoundError:
-        return []
-
 
 def capital(request, capital):
     start_time = time.time()
@@ -58,7 +68,6 @@ def capital(request, capital):
         thread1 = threading.Thread(target=get_weather_data)
         thread1.start()
         thread1.join()
-        print(country_data)
 
         if weather_data:
             df_forecast = pd.DataFrame(weather_data.get('days', [])[:7])

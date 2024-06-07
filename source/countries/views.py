@@ -22,7 +22,7 @@ def load_data():
             data = json.load(file)
             return data
     except FileNotFoundError:
-        return []
+        return []  
     
 def load_data_countries(json, country_name):   
 
@@ -33,7 +33,7 @@ def load_data_countries(json, country_name):
         for common_name in common_names:
             if common_name == country_name:
                 return country
-    return {}  
+    return {}
 
 def home(request):
     if request.method == 'POST':
@@ -45,59 +45,6 @@ def home(request):
     # Si no hay búsqueda o es una solicitud GET, renderizar la página home
     return render(request, 'countries/home.html')
 
-
-def search_by_currency(request):
-    if request.method == 'POST':
-        # Obtener el término de búsqueda del formulario
-        currency_name = request.POST.get('country_currency', None) 
-        if currency_name:
-            # Redirigir al usuario a la vista detail del país buscado
-            return redirect('countries:currency', currency=currency_name)
-    # Si no hay búsqueda o es una solicitud GET, renderizar la página home
-    return render(request, 'countries/b_currency.html')  
-
-def get_common_name(name_dict):
-    return name_dict['common']
-
-def currency(request, currency):
-    start_time = time.time() 
-    try:    
-        countries_data = load_data()
-        df = pd.DataFrame(countries_data)
-
-        # Función para verificar si la divisa está presente en el nombre de las divisas
-        def has_currency(currencies):
-            if isinstance(currencies, dict):
-                for value in currencies.values():
-                    if currency.capitalize() in value['name']:
-                        return True
-            return False
-        
-        # Filtrar los países que tienen la divisa especificada
-        df_filtered = df[df['currencies'].apply(has_currency)]
-                
-        # Ordenar los países
-        df_filtered['common_name'] = df_filtered['name'].apply(lambda name: name['common'] if isinstance(name, dict) else None)
-        df_sorted = df_filtered.sort_values(by='common_name')
-
-        end_time = time.time()
-        print(end_time - start_time)
-
-        template = loader.get_template("countries/currency.html")
-        context = {
-            "data": df_sorted.to_dict(orient='records'),
-        }
-        return HttpResponse(template.render(context, request))
-    
-    except Exception as e:
-        return HttpResponse("Error: {}".format(str(e)))
-        
-
-def favoritos(request):
-    favoritos_usuario = Favorito.objects.filter(usuario=request.user)
-    return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
-
-
 def detail(request, country):
     start_time = time.time()
     try:
@@ -107,11 +54,7 @@ def detail(request, country):
         # Obtener datos del JSON
         countries_data = load_data()  # Supongo que tienes una función llamada load_data()
 
-        for country_item in countries_data:
-            if country_item['name']['common'].lower() == country.lower():
-                country_data = country_item
-                break
-
+        country_data = load_data_countries(countries_data, country)
 
         if not country_data:
             return render(request, 'countries/no_data.html')
@@ -157,6 +100,7 @@ def detail(request, country):
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
 
+
 def añadir_favorito(request, pais_id):
     if request.method == 'POST':
         pais_nombre = request.POST.get('pais')  # Obtener el nombre del país del formulario POST
@@ -167,3 +111,7 @@ def añadir_favorito(request, pais_id):
     else:
         form = FavoritoForm()
     return render(request, 'añadir_favorito.html', {'form': form})
+
+def favoritos(request):
+    favoritos_usuario = Favorito.objects.filter(usuario=request.user)
+    return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})

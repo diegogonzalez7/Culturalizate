@@ -1,7 +1,4 @@
-
-
-from django.urls import path, include
-from django.contrib import admin
+from django.urls import path
 
 from . import views
 
@@ -11,8 +8,7 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('<str:country>/', views.detail, name='detail'),
     path('', views.home, name='home'),
-    #path('favoritos/', views.favoritos, name='favoritos'),
-    path('currency',views.search_by_currency, name='search_by_currency'),
-    path('currency/<str:currency>/', views.currency, name='currency'),
+    # Habría que separar favoritos en otra aplicación, dejamos las tres de arriba
+    path('favoritos/', views.favoritos, name='favoritos'),
     path('añadir-favorito/', views.añadir_favorito, name='añadir_favorito')
 ]

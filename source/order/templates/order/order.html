@@ -1,5 +1,5 @@
 {% extends 'countries/base.html' %}
-{% block title %}ORDER BY{% endblock %}
+{% block title %}Order by{% endblock %}
 {% block content %}
 <style>
     body {
@@ -108,6 +108,7 @@
 <body>
     <div id="search-container">
         <h1>Ordenar países</h1>
+        <h2>En esta pantalla podrá ordenar todos los países del mundo según su área o población de forma ascendente o descendente</h2>
         <div id="search-box">
             <button class="order-button" onclick="window.location.href='/order/population_asc/'">Población Ascendente</button>
             <button class="order-button" onclick="window.location.href='/order/population_desc/'">Población Descendente</button>

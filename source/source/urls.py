@@ -18,18 +18,15 @@ from django.urls import include,path
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('home', views.home, name='home'),
-    path('countries/', include('countries.urls')),
-    path('users/', include('users.urls')),
-    path('order/', include('order.urls')),
-    path('capitals/', include('capitals.urls')),
-    path('languages/', include('languages.urls')),
-    path('upload/', include('upload.urls')),
-    path('compare/', include('compare.urls')),
-    path("home/", include('countries.urls')),
-    path('currency',views.search_by_currency, name='search_by_currency'),
-    path('favoritos',views.favoritos, name='favoritos'),
+    path('countries/', include('countries.urls')), # Aplicación de búsqueda por nombre de país
+    path('users/', include('users.urls')), # Aplicación de gestión de usuarios
+    path('order/', include('order.urls')), # Aplicación de ordenar países por área o población
+    path('capitals/', include('capitals.urls')), # Aplicación de búsqueda por capital
+    path('languages/', include('languages.urls')), # Aplicación de búsqueda por idioma
+    path('upload/', include('upload.urls')), # Aplicación para subir gráficas a Flickr
+    path('compare/', include('compare.urls')), # Aplicación de comparación de países
+    path('currencies/', include('currencies.urls')), # Aplicación de búsqueda por divisa
+    path("home/", include('countries.urls'))
     ]
 """
 django.contrib.auth.urls incluye los siguientes patrones URL:

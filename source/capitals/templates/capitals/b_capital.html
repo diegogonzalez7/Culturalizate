@@ -1,5 +1,5 @@
 {% extends 'countries/base.html' %}
-{% block title %}SEARCH BY CAPITAL{% endblock %}
+{% block title %}Search by capital{% endblock %}
 {% block content %}
 <style>
     #spinner-container {
@@ -27,7 +27,6 @@
 
     h2 {
         text-align: center;
-        margin-bottom: 2em;
         font-size: 1.5em;
         color: #555;
     }
@@ -43,6 +42,7 @@
     #search-box {
         background-color: #fff;
         padding: 30px;
+        margin-top: 2em;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 100%;
@@ -98,8 +98,8 @@
 <body>
     <div id="search-container">
         <h1>Busque un país por capital</h1>
-        <h2>Introduzca la capital de un país en inglés para obtener datos sobre él. 
-            Por ejemplo: Madrid, Lisbon, London</h2>
+        <h2>Introduzca la capital de un país en inglés para obtener datos sobre él.</h2> 
+        <h2>Por ejemplo: Madrid, Lisbon, London</h2>
         <div id="search-box">
             <form id="search-form" method="post">
                 {% csrf_token %}
