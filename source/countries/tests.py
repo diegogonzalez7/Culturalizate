@@ -9,10 +9,11 @@ class CountriesViewsTest(TestCase):
     def test_detail_view_post(self):
         response = self.client.post('/detail/', {'country_name': 'Spain'})
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail_view_invalid_post(self):
         response = self.client.post('/detail/', {'country_name': 'dadasdadasdas'})
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('countries:no_data'))
 
 
