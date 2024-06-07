@@ -17,7 +17,6 @@ a todos los países del mundo. Los casos de uso de nuestra aplicación son los s
  - 12.Listado de países ordenados por su área
  - 13.Guardar gráficas de comparación obtenidas.
 
-
 ## Integrantes Grupo:
  - David Vilariño Da Silva david.vilarino@udc.es
  - Manuel Fontenlos Mato manuel.fontenlos@udc.es
@@ -31,54 +30,36 @@ desde la carpeta principal:
 O, desde cualquier carpeta:
 docker run -p 8000:8000 manufontenlos/countries
 
-
-## Problemas conocidos:
-
- - En los distintos buscadores de la aplicación no proporcionamos un listado con las distintas opciones para el usuario, lo que puede dar problemas al mismo, ya que el nombre del país, lenguaje, etc. se debe de escribir en inglés.
-
- - Los usuarios que no inician sesión tienen acceso a los mismos datos que los que sí que acceden.
-
- - No se guarda ni se muestra correctamente los países favoritos para cada usuario.
-
-
-## Instrucciones de uso:
-
- - Para buscar información de un país (CU6): En la página principal introducir España, Brazil, England o el nombre de otro país cualquiera.
-
- - Para buscar países que hablen un determinado idioma (CU10): Clicar en search by language en la barra de navegación e introducir español, english, portuguese, russian, arabic u otro idioma que el usuario desee.
-
- - Para buscar el país de una capital (CU9): Clicar en search by capital y introducir el nombre de la capital: Madrid, París, etc.
-
- - Para buscar países que hablen un determinado idioma (CU8): Clicar en search by currency en la barra de navegación e introducir euro, dollar, dinar u otro divisa que el usuario desee.
-
-## Información devuelta de cada país (CU6):
-
-Para el país que el usuario busque devolvemos una tabla con la siguiente información:
-
- - Capital
- - Divisa
- - Continentes
- - Región
- - Subregión
- - Idiomas
- - Área (m²)
- - Población
- - Timezone
-
-## URLS funcionales
-
- - 127.0.0.1:8000/home -> Home Page
- - 127.0.0.1:8000/login/ -> inicio sesión
- - 127.0.0.1:8000/sign_up/ -> registro usuarios 
- - 127.0.0.1:8000/apidata/ -> datos de la api (primera versión aún (hecho solo el caso de prueba), falta recoger respuesta forms y concatenar con la url para que funcione bien)
- - 127.0.0.1:8000/language -> buscar países por idioma
- - 127.0.0.1:8000/capital -> buscar países por capital
- - 127.0.0.1:8000/currency -> buscar países que usen una divisa
-
 ## Primera Iteración
 
 Para la primera iteración del proyecto deberíamos haber completado los casos de uso 1,2,3,4,5,6,8,9 y 10 pero debido a dificultades en el desarrollo y falta de tiempo los casos de uso  3,4 y 5 no funcionan de forma correcta.
 
+## Entrega final
+
+Para la entrega final hemos hecho con éxito todos los casos de uso, así como solventado los errores indicados en la primera iteración. Ahora la gestión de usuarios funciona correctamente, así como la funcionalidad de favoritos para los usuarios registrados.
+
 ## Uso de Pandas
 
 En esta primera iteración usamos pandas para ordenar los listados de países que nos devuelve la API de RestCountries al buscar países en los que se hable un determinado idioma y en los que se use una divisa concreta: estos son los casos de uso 8 y 10.
+En la entrega final hemos usado Pandas para los casos de uso relacionados con ordenar el dataframe de países por área y población, y en la comparación de datos entre dos países.
+
+## Librerías third-party de Python
+
+Hemos usado la librería/API googletrans para traducir los datos obtenidos con la predicción meteorológica en un determinado país o capital.
+También hemos empleado el framework bootstrap para hacer las páginas web para hacerlos adaptables con un diseño responsive.
+
+## Soporte de usuarios
+
+Tal y como habíamos diseñado en la propuesta, hemos implementado una gestión de usuarios con vistas creadas por nosotros combinadas con las vistas predefinidas de Django para User Management.
+
+## Separación del proyecto en aplicaciones
+
+Hemos separado el proyecto en diferentes aplicaciones, obteniendo así unas vistas más cómodas y manejables, así como unas urls distinguibles dentro del proyecto.
+
+## Experiencia de usuario e interfaz cuidadas
+
+Los tiempos de respuesta ante peticiones los hemos reducido lo máximo posible, gracias a la concurrencia. Hemos diseñado también pantallas de error, spinners de carga mientras se realizan las operaciones y diseños atractivos para el usuario.
+
+## Documentación
+
+Dentro de /doc tenemos una versión final de documentación con un resumen de los casos de uso y su flujo de datos, así como una documentación más detallada sobre el proyecto
