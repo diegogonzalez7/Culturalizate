@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'languages',
     'compare',
     'currencies',
+    'favorites',
     'upload.apps.UploadConfig'
 ]
 

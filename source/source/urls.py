@@ -11,6 +11,7 @@ urlpatterns = [
     path('upload/', include('upload.urls')), # Aplicación para subir gráficas a Flickr
     path('compare/', include('compare.urls')), # Aplicación de comparación de países
     path('currencies/', include('currencies.urls')), # Aplicación de búsqueda por divisa
+    path('favorites/', include('favorites.urls')),
     path("home/", include('countries.urls'))
     ]
 """
