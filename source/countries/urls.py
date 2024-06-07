@@ -9,6 +9,6 @@ urlpatterns = [
     path('<str:country>/', views.detail, name='detail'),
     path('', views.home, name='home'),
     # Habría que separar favoritos en otra aplicación, dejamos las tres de arriba
-    path('favoritos/', views.favoritos, name='favoritos'),
-    path('añadir-favorito/', views.añadir_favorito, name='añadir_favorito')
+    path('add_to_favorites', views.add_to_favorites, name='add_to_favorites'),
+    path('show_favorites', views.show_favorites, name='show_favorites')
 ]

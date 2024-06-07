@@ -101,17 +101,38 @@ def detail(request, country):
         return HttpResponse("Error: {}".format(str(e)))
 
 
-def añadir_favorito(request, pais_id):
+def add_to_favorites(request):
     if request.method == 'POST':
-        pais_nombre = request.POST.get('pais')  # Obtener el nombre del país del formulario POST
-        usuario = request.user
-        Favorito.objects.create(usuario=usuario, pais=pais_nombre)
-        return redirect('favoritos')  # Redirige al usuario a la página de favoritos después de agregar el país
+        country_name = request.POST.get('country_name', None)
+        if country_name:
+            # Cargar los datos del JSON
+            countries_data = load_data()
+            # Verificar si el país existe en la lista de países
+            country_data = next((country for country in countries_data if country['name']['common'].lower() == country_name.lower()), None)
+            if country_data:
+                # Obtener la lista de favoritos de la sesión del usuario
+                favorites = request.session.get('favorites', [])
+                # Verificar si el país ya está en la lista de favoritos
+                if country_name not in favorites:
+                    favorites.append(country_name)
+                    request.session['favorites'] = favorites
+                return redirect('countries:show_favorites')
+            else:
+                return render(request, 'countries/no_data.html', {'message': 'País no encontrado.'})
+    return render(request, 'countries/add_favorite.html')
 
-    else:
-        form = FavoritoForm()
-    return render(request, 'añadir_favorito.html', {'form': form})
-
-def favoritos(request):
-    favoritos_usuario = Favorito.objects.filter(usuario=request.user)
-    return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
+def show_favorites(request):
+    favorites = request.session.get('favorites', [])
+    if not favorites:
+        return render(request, 'countries/no_favorites.html')
+    
+    # Cargar los datos del JSON
+    countries_data = load_data()
+    # Filtrar los datos de los países favoritos
+    favorite_countries = [country for country in countries_data if country['name']['common'] in favorites]
+    
+    template = loader.get_template("countries/show_favorites.html")
+    context = {
+        "favorite_countries": favorite_countries,
+    }
+    return HttpResponse(template.render(context, request))
