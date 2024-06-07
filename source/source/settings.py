@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'order',
     'capitals',
     'languages',
-    'compare.apps.CompareConfig',
+    'compare',
     'upload.apps.UploadConfig'
 ]
 

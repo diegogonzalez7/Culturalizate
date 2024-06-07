@@ -26,7 +26,7 @@ urlpatterns = [
     path('capitals/', include('capitals.urls')),
     path('languages/', include('languages.urls')),
     path('upload/', include('upload.urls')),
-    path('comp_countries/', include('compare.urls')),
+    path('compare/', include('compare.urls')),
     path("home/", include('countries.urls')),
     path('currency',views.search_by_currency, name='search_by_currency'),
     path('favoritos',views.favoritos, name='favoritos'),

@@ -62,30 +62,40 @@ def get_common_name(name_dict):
 def currency(request, currency):
     start_time = time.time() 
     try:    
-        url = "https://restcountries.com/v3.1/currency/" + currency
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            #Pasamos a DataFrame con Pandas para ordenarlos
-            df = pd.DataFrame(data) 
-            df['common_name'] = df['name'].apply(get_common_name)
-            #Ordenamos los países según el nombre común
-            df_sorted = df.sort_values(by='common_name')
+        countries_data = load_data()
+        df = pd.DataFrame(countries_data)
 
-            end_time = time.time()
-            print(end_time - start_time)
+        # Función para verificar si la divisa está presente en el nombre de las divisas
+        def has_currency(currencies):
+            if isinstance(currencies, dict):
+                for value in currencies.values():
+                    if currency.capitalize() in value['name']:
+                        return True
+            return False
+        
+        # Filtrar los países que tienen la divisa especificada
+        df_filtered = df[df['currencies'].apply(has_currency)]
+                
+        # Ordenar los países
+        df_filtered['common_name'] = df_filtered['name'].apply(lambda name: name['common'] if isinstance(name, dict) else None)
+        df_sorted = df_filtered.sort_values(by='common_name')
 
-            template = loader.get_template("countries/currency.html")
-            context = {
-                "data": df_sorted.to_dict(orient='records'),
-            }
-            return HttpResponse(template.render(context, request))
-        elif response.status_code == 404:
-            return render(request, 'countries/no_data.html')
-        else:
-            return HttpResponse("Error en la solicitud: {}".format(response.status_code))
+        end_time = time.time()
+        print(end_time - start_time)
+
+        template = loader.get_template("countries/currency.html")
+        context = {
+            "data": df_sorted.to_dict(orient='records'),
+        }
+        return HttpResponse(template.render(context, request))
+    
     except Exception as e:
         return HttpResponse("Error: {}".format(str(e)))
+        
+
+def favoritos(request):
+    favoritos_usuario = Favorito.objects.filter(usuario=request.user)
+    return render(request, 'lista_favoritos.html', {'favoritos_usuario': favoritos_usuario})
 
 
 def detail(request, country):
@@ -157,89 +167,3 @@ def añadir_favorito(request, pais_id):
     else:
         form = FavoritoForm()
     return render(request, 'añadir_favorito.html', {'form': form})
-
-
-def comp_countries(request, country1, country2):
-
-    try: 
-        
-        data=load_data()
-
-        data_country1=load_data_countries(data,country1)
-        data_country2=load_data_countries(data,country2)
-        
-        template = loader.get_template("countries/comp_countries.html")
-
-
-        data = {
-            'Country': [country1, country2],
-            'Population': [data_country1['population'], data_country2['population']],  # Población en millones
-            'Area': [data_country1['area'], data_country2['area']]  # Área en kilómetros cuadrados
-        }
-
-        df = pd.DataFrame(data)
-
-        # Calcular la densidad de población
-        df['Density'] = df['Population'] / df['Area']
-
-        # Gráfica de comparación de población
-        fig1, ax1 = plt.subplots(figsize=(10, 6))
-        ax1.bar(df['Country'], df['Population'], color='blue', label='Population')
-        ax1.set_xlabel('Country')
-        ax1.set_ylabel('Population')
-        ax1.set_title('Comparison of Population')
-        ax1.legend()
-
-        # Gráfica de comparación de área
-        fig2, ax2 = plt.subplots(figsize=(10, 6))
-        ax2.bar(df['Country'], df['Area'], color='green', label='Area')
-        ax2.set_xlabel('Country')
-        ax2.set_ylabel('Area (sq km)')
-        ax2.set_title('Comparison of Area')
-        ax2.legend()
-
-        # Gráfica de comparación de densidad de población
-        fig3, ax3 = plt.subplots(figsize=(10, 6))
-        ax3.bar(df['Country'], df['Density'], color='red', label='Density')
-        ax3.set_xlabel('Country')
-        ax3.set_ylabel('Population Density (people per sq km)')
-        ax3.set_title('Comparison of Population Density')
-        ax3.legend()
-
-        # Guardar las figuras en archivos
-        fig1.savefig('countries/static/images/comparison_population.png')
-        fig2.savefig('countries/static/images/comparison_area.png')
-        fig3.savefig('countries/static/images/comparison_density.png')
-
-        context = {
-            "country1": data_country1,
-            "country2": data_country2
-        }
-        return HttpResponse(template.render(context, request))
-    
-    except Exception as e:
-        return HttpResponse("Error: {}".format(str(e)))    
-    
-
-def upload(request):
-
-    # Claves del consumidor 
-    consumer_key = "6bb7d5f2ac85fca1ed7331944d347df2"
-    consumer_secret = '081941db6293c397'
-
-    #Claves del cliente
-    oauth_token='72157720919853797-aad34a9ab48e0d5e'
-    oauth_token_secret='299eddf842906344'
-
-    oauth = OAuth1(client_key=consumer_key,
-        client_secret=consumer_secret,
-        resource_owner_key=oauth_token,
-        resource_owner_secret=oauth_token_secret)
-
-    upload_url = 'https://up.flickr.com/services/upload/'
-
-    with open(photo, 'rb') as photo:
-        files = {'photo': photo}
-        response = requests.post(upload_url, files=files, auth=oauth)
-
-    return render(request, 'countries/upload.html') 

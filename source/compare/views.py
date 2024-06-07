@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import pandas as pd
-import requests, json, time
+import json
 import matplotlib.pyplot as plt
 from django.template import loader
 from django.http import HttpResponse
@@ -33,7 +33,7 @@ def compare_countries(request):
         country2  = request.POST.get('country2', None)
         if country1 and country2:
             return redirect('compare:comp_countries', country1=country1, country2=country2)
-    return render(request,'b_comp_countries.html')
+    return render(request,'compare/b_comp_countries.html')
 
 def comp_countries(request, country1, country2):
 
@@ -44,7 +44,7 @@ def comp_countries(request, country1, country2):
         data_country1=load_data_countries(data,country1)
         data_country2=load_data_countries(data,country2)
         
-        template = loader.get_template("comp_countries.html")
+        template = loader.get_template("compare/comp_countries.html")
 
 
         data = {
